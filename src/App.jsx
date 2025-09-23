@@ -1,0 +1,614 @@
+// src/App.jsx
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
+
+const socialLinks = [
+  {
+    name: "Facebook",
+    icon: <FaFacebookF />,
+    href: "https://www.facebook.com",
+  },
+  {
+    name: "Twitter",
+    icon: <FaTwitter />,
+    href: "https://www.twitter.com",
+  },
+  {
+    name: "Instagram",
+    icon: <FaInstagram />,
+    href: "https://www.instagram.com",
+  },
+  {
+    name: "YouTube",
+    icon: <FaYoutube />,
+    href: "https://www.youtube.com",
+  },
+];
+
+// Variants untuk animasi
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 50, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const fadeInVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.8 },
+  },
+};
+
+const scaleVariants = {
+  hidden: { scale: 0.8, opacity: 0 },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: { duration: 0.5 },
+  },
+};
+
+function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="font-sans min-w-screen bg-gradient-to-b from-blue-50 to-indigo-100 min-h-screen ">
+      {/* Navigation */}
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+        className={`py-4 sticky top-0 z-50 transition-all duration-300 backdrop-blur-md ${
+          isScrolled ? "bg-white/30 shadow-md" : "bg-white"
+        }`}
+      >
+        <div className="container mx-auto px-4 flex justify-between items-center">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="flex items-center"
+          >
+            <div>
+              <a href="/">
+                <img
+                  src="./src/assets/afm_logo.png"
+                  alt="Logo"
+                  className="h-12"
+                />
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex space-x-8">
+            {["Beranda", "Program", "Testimoni", "Kontak"].map(
+              (item, index) => (
+                <motion.a
+                  key={index}
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: index * 0.1 + 0.3 }}
+                  href={`#${item.toLowerCase().replace(" ", "-")}`}
+                  className=" font-medium transition"
+                >
+                  {item}
+                </motion.a>
+              )
+            )}
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="hidden md:block bg-gray-700 text-black font-bold py-2 px-6 rounded-lg transition duration-300"
+          >
+            <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
+          </motion.button>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            className="md:hidden text-gray-800 focus:outline-none"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+          </motion.button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden bg-white/70 backdrop-blur-md py-4 px-4 overflow-hidden"
+          >
+            {["Beranda", "Program", "Testimoni", "Kontak"].map(
+              (item, index) => (
+                <a
+                  key={index}
+                  href={`#${item.toLowerCase().replace(" ", "-")}`}
+                  className="block py-2 text-gray-800 hover:text-indigo-600"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item}
+                </a>
+              )
+            )}
+            <button className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-indgo-700 font-bold py-2 px-4 rounded-lg w-full transition duration-300">
+              <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
+            </button>
+          </motion.div>
+        )}
+      </motion.nav>
+
+      {/* Hero Section */}
+      <section
+        id="beranda"
+        className="py-16 md:py-20 bg-gradient-to-r from-indigo-700 to-indigo-400 text-white"
+      >
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="md:w-1/2 mb-10 md:mb-0"
+          >
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl md:text-5xl font-bold leading-tight mb-4"
+            >
+              Pelajari Matematika dengan Cara Menyenangkan
+            </motion.h1>
+            <motion.p
+              variants={itemVariants}
+              className="text-lg md:text-xl mb-8 opacity-90"
+            >
+              Kami Membantu anak memahami materi di sekolah lebih mendalam,
+              sehingga anak bisa menjadi siswa yang berprestasi di kelas.
+            </motion.p>
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
+            >
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white text-indigo-600 hover:bg-indigo-50 font-bold py-3 px-8 rounded-lg text-lg transition duration-300"
+              >
+                <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-transparent border-2 border-white hover:bg-indigo-700 font-bold py-3 px-8 rounded-lg text-lg text-indigo-600 transition duration-300"
+              >
+                <a href="#program">Lihat Program</a>
+              </motion.button>
+            </motion.div>
+          </motion.div>
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.7 }}
+            className="md:w-1/2 flex justify-center"
+          >
+            <div className="hidden h-96 rounded-xl w-full max-w-md md:flex items-center justify-center">
+              <img src="./src/assets/hero.svg" alt="" />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Program Section */}
+      <section id="program" className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-indigo-600 mb-4">
+              Program Belajar
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Program belajar yang kami sediakan ini, untuk membantu siswa
+              memahami konsep matematika secara mendalam
+            </p>
+          </motion.div>
+
+          <div className="flex justify-center">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={containerVariants}
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full mx-auto"
+            >
+              {[
+                {
+                  name: "Kelas Asyik",
+                  features: [
+                    "Materi sesuai kurikulum",
+                    "Latihan soal harian",
+                    "Tryout bulanan",
+                    "Diskusi kelompok",
+                    "TK (Calistung), SD, SMP",
+                  ],
+                  price: "Rp 250.000",
+                },
+                {
+                  name: "Kelas Privat",
+                  features: [
+                    "Materi sesuai kebutuhan siswa",
+                    "Latihan soal intensif",
+                    "Tryout khusus",
+                    "Konsultasi 1-on-1",
+                    "TK (Calistung), SD, SMP",
+                  ],
+                  price: "Rp 500.000",
+                },
+              ].map((program, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  whileHover={{ y: -10 }}
+                  className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-6 border border-indigo-100"
+                >
+                  <div className="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                    <span className="text-2xl font-bold">{index + 1}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-4">
+                    {program.name}
+                  </h3>
+                  <ul className="space-y-2 text-gray-600 mb-6">
+                    {program.features.map((item, i) => (
+                      <li key={i} className="flex items-start">
+                        <svg
+                          className="h-5 w-5 text-green-500 mr-2 mt-0.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          ></path>
+                        </svg>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="font-bold text-2xl text-indigo-600 mb-4">
+                    {program.price}
+                    <span className="text-sm font-normal text-gray-500">
+                      /bulan
+                    </span>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition duration-300"
+                  >
+                    Pilih Program
+                  </motion.button>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimoni Section */}
+      <section
+        id="testimoni"
+        className="py-16 bg-gradient-to-br from-indigo-50 to-purple-50"
+      >
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-indigo-600 mb-4">
+              Apa Kata Siswa Kami
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Berikut adalah beberapa testimoni dari siswa yang telah bergabung
+              dengan AFM Bimbel
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+          >
+            {[
+              {
+                name: "Kiya",
+                school: "SMP Emer Islamic Boarding School (EIBOS)",
+                quote:
+                  "Berkat AFM Bimbel, nilai matematika saya naik signifikan. Metode pengajarannya mudah dipahami dan menyenangkan!",
+              },
+              {
+                name: "Bita",
+                school: "SD Sang Pencerah",
+                quote:
+                  "Tutor-tutornya sangat sabar dan berpengalaman. Sekarang saya jadi suka pelajaran matematika!",
+              },
+              {
+                name: "Rasyid",
+                school: "SD Cahaya Bangsa",
+                quote:
+                  "Belajar jadi seru banget! Ada game matematika dan hadiah buat yang berprestasi.",
+              },
+              {
+                name: "Zafran",
+                school: "SD Sang Pencerah",
+                quote:
+                  "Tryout bulanannya sangat membantu mempersiapkan ujian. Soal-soalnya mirip dengan ujian sekolah.",
+              },
+            ].map((testi, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                whileHover={{ y: -5 }}
+                className="bg-white p-6 rounded-xl shadow-md border border-indigo-100"
+              >
+                <div className="flex items-center mb-4">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2 * index }}
+                    className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"
+                  />
+                  <div className="ml-4">
+                    <h4 className="font-bold text-lg">{testi.name}</h4>
+                    <p className="text-indigo-600">{testi.school}</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 italic">"{testi.quote}"</p>
+                <div className="flex mt-4">
+                  {[...Array(5)].map((_, i) => (
+                    <svg
+                      key={i}
+                      className="w-5 h-5 text-yellow-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInVariants}
+        className="py-16 bg-gradient-to-r from-indigo-600 to-purple-700 text-white"
+      >
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Siap Mengubah Matematika Menjadi Pelajaran Favoritmu?
+          </h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
+            Daftar sekarang dan dapatkan kelas gratis percobaan 1 Sesi!
+          </p>
+          <motion.div
+            className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.button
+              variants={scaleVariants}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-white text-indigo-600 hover:bg-indigo-50 font-bold py-3 px-8 rounded-lg text-lg transition duration-300"
+            >
+              <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
+            </motion.button>
+            <motion.button
+              variants={scaleVariants}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className=" border-2 border-white text-indigo-600 hover:bg-indigo-700 font-bold py-3 px-8 rounded-lg text-lg transition duration-300"
+            >
+              <a href="https://wa.me/6281373420852">Konsultasi Gratis</a>
+            </motion.button>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Footer */}
+      <motion.footer
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="bg-gradient-to-br from-indigo-50 to-purple-50 text-black py-12"
+      >
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <div className="flex items-center mb-4">
+                <img
+                  src="./src/assets/afm_logo.png"
+                  alt="Logo"
+                  className="w-10 h-7 mr-2"
+                />
+                <span className="text-xl font-bold">AFM Bimbel</span>
+              </div>
+              <p className="text-gray-400 mb-4">
+                Bimbingan belajar matematika khusus untuk siswa TK (CALISTUNG),
+                SD, SMP dengan metode belajar interaktif.
+              </p>
+              <div className="flex space-x-4">
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={index}
+                    whileHover={{ y: -5 }}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={social.name}
+                    className="text-gray-400 hover:text-white transition duration-300"
+                  >
+                    <span className="sr-only">{social.name}</span>
+                    <div className="border-2 w-10 h-10 rounded-full flex items-center justify-center">
+                      {social.icon}
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold mb-4">Kontak Kami</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li className="flex items-start">
+                  <svg
+                    className="h-5 w-5 mr-2 mt-0.5 text-indigo-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    ></path>
+                  </svg>
+                  0813 7342 0852
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="h-5 w-5 mr-2 mt-0.5 text-indigo-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                  mybimbel21@gmail.com
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="h-5 w-5 mr-2 mt-0.5 text-indigo-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    ></path>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                  Jl. Gatot Subroto (Samping BFC Yosodadi), Yosodadi, Metro
+                  Timur
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold mb-2">Lokasi</h3>
+
+              <div className="flex justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-lg overflow-hidden shadow-lg"
+                >
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d776.4851669180516!2d105.33748619561888!3d-5.1064337244389915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sid!2sid!4v1758599140211!5m2!1sid!2sid"
+                    width="400"
+                    height="150"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-400">
+            <p>
+              &copy; {new Date().getFullYear()} AFM-Bimbel. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </motion.footer>
+    </div>
+  );
+}
+
+export default App;
