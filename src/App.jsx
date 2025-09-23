@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
+import logo from "./assets/AFM_LOGO.png";
 
 const socialLinks = [
   {
@@ -95,11 +96,7 @@ function App() {
           >
             <div>
               <a href="/">
-                <img
-                  src="./src/assets/afm_logo.png"
-                  alt="Logo"
-                  className="h-12"
-                />
+                <img src={logo} alt="Logo" className="h-12" />
               </a>
             </div>
           </motion.div>
@@ -329,7 +326,7 @@ function App() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition duration-300"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-indigo-700 py-2 rounded-lg transition duration-300"
                   >
                     Pilih Program
                   </motion.button>
@@ -485,11 +482,7 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <img
-                  src="./src/assets/afm_logo.png"
-                  alt="Logo"
-                  className="w-10 h-7 mr-2"
-                />
+                <img src={logo} alt="Logo" className="w-10 h-7 mr-2" />
                 <span className="text-xl font-bold">AFM Bimbel</span>
               </div>
               <p className="text-gray-400 mb-4">
