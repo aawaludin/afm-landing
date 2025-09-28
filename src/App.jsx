@@ -78,14 +78,14 @@ function App() {
   }, []);
 
   return (
-    <div className="font-sans min-w-screen bg-gradient-to-b from-blue-50 to-indigo-100 min-h-screen ">
+    <div className="font-sans min-w-screen bg-gradient-to-b from-indigo-200 to-purple-100 min-h-screen ">
       {/* Navigation */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
-        className={`py-4 sticky top-0 z-50 transition-all duration-300 backdrop-blur-md ${
-          isScrolled ? "bg-white/30 shadow-md" : "bg-white"
+        className={`py-4 sticky top-0 z-50 transition-all duration-300  backdrop-blur-md ${
+          isScrolled ? "bg-white/30 shadow-md" : "bg-white/10 backdrop-blur-sm"
         }`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
@@ -102,21 +102,23 @@ function App() {
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
-            {["Beranda", "Program", "Testimoni", "Kontak"].map(
-              (item, index) => (
-                <motion.a
-                  key={index}
-                  initial={{ y: -20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: index * 0.1 + 0.3 }}
-                  href={`#${item.toLowerCase().replace(" ", "-")}`}
-                  className=" font-medium transition"
-                >
-                  {item}
-                </motion.a>
-              )
-            )}
+          <div
+            className={`hidden md:flex space-x-8 ${
+              isScrolled ? "text-purple-900" : "text-purple-600"
+            } `}
+          >
+            {["Beranda", "Kelas", "Testimoni", "Kontak"].map((item, index) => (
+              <motion.a
+                key={index}
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: index * 0.1 + 0.3 }}
+                href={`#${item.toLowerCase().replace(" ", "-")}`}
+                className=" font-medium transition"
+              >
+                {item}
+              </motion.a>
+            ))}
           </div>
 
           <motion.button
@@ -155,20 +157,18 @@ function App() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden bg-white/70 backdrop-blur-md py-4 px-4 overflow-hidden"
+            className="md:hidden dark:tbg-white bg-white/70  py-4 px-4 overflow-hidden"
           >
-            {["Beranda", "Program", "Testimoni", "Kontak"].map(
-              (item, index) => (
-                <a
-                  key={index}
-                  href={`#${item.toLowerCase().replace(" ", "-")}`}
-                  className="block py-2 text-gray-800 hover:text-indigo-600"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item}
-                </a>
-              )
-            )}
+            {["Beranda", "Kelas", "Testimoni", "Kontak"].map((item, index) => (
+              <a
+                key={index}
+                href={`#${item.toLowerCase().replace(" ", "-")}`}
+                className="block py-2 text-gray-800 hover:text-indigo-600"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item}
+              </a>
+            ))}
             <button className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-indgo-700 font-bold py-2 px-4 rounded-lg w-full transition duration-300">
               <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
             </button>
@@ -179,7 +179,7 @@ function App() {
       {/* Hero Section */}
       <section
         id="beranda"
-        className="py-16 md:py-20 bg-gradient-to-r from-indigo-700 to-indigo-400 text-white"
+        className="py-16 md:py-20 bg-gradient-to-b from-indigo-700 to-purple-500 text-white"
       >
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
           <motion.div
@@ -215,9 +215,11 @@ function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-transparent border-2 border-white hover:bg-indigo-700 font-bold py-3 px-8 rounded-lg text-lg text-indigo-600 transition duration-300"
+                className="bg-white border-2 border-white hover:bg-indigo-700 font-bold py-3 px-8 rounded-lg text-lg text-indigo-600 transition duration-300"
               >
-                <a href="#program">Lihat Program</a>
+                <a href="#program" className="">
+                  Lihat Program
+                </a>
               </motion.button>
             </motion.div>
           </motion.div>
@@ -245,10 +247,10 @@ function App() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-indigo-600 mb-4">
-              Program Belajar
+              Kelas Belajar
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Program belajar yang kami sediakan ini, untuk membantu siswa
+              Kelas belajar yang kami sediakan ini, untuk membantu siswa
               memahami konsep matematika secara mendalam
             </p>
           </motion.div>
@@ -270,6 +272,7 @@ function App() {
                     "Tryout bulanan",
                     "Diskusi kelompok",
                     "TK (Calistung), SD, SMP",
+                    "8 sesi/bulan",
                   ],
                   price: "Rp 250.000",
                 },
@@ -281,6 +284,7 @@ function App() {
                     "Tryout khusus",
                     "Konsultasi 1-on-1",
                     "TK (Calistung), SD, SMP",
+                    "8 sesi/bulan",
                   ],
                   price: "Rp 500.000",
                 },
@@ -326,7 +330,7 @@ function App() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-indigo-700 py-2 rounded-lg transition duration-300"
+                    className="w-full dark:text-white bg-indigo-600 hover:bg-indigo-700 text-indigo-700 py-2 rounded-lg transition duration-300"
                   >
                     Pilih Program
                   </motion.button>
@@ -406,7 +410,9 @@ function App() {
                     className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"
                   />
                   <div className="ml-4">
-                    <h4 className="font-bold text-lg">{testi.name}</h4>
+                    <h4 className="font-bold dark:text-indigo-600 text-lg">
+                      {testi.name}
+                    </h4>
                     <p className="text-indigo-600">{testi.school}</p>
                   </div>
                 </div>
@@ -463,7 +469,7 @@ function App() {
               variants={scaleVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className=" border-2 border-white text-indigo-600 hover:bg-indigo-700 font-bold py-3 px-8 rounded-lg text-lg transition duration-300"
+              className=" border-2 bg-white border-white text-indigo-600 hover:bg-indigo-700 font-bold py-3 px-8 rounded-lg text-lg transition duration-300"
             >
               <a href="https://wa.me/6281373420852">Konsultasi Gratis</a>
             </motion.button>
@@ -485,7 +491,7 @@ function App() {
                 <img src={logo} alt="Logo" className="w-10 h-7 mr-2" />
                 <span className="text-xl font-bold">AFM Bimbel</span>
               </div>
-              <p className="text-gray-400 mb-4">
+              <p className="text-gray-700 mb-4">
                 Bimbingan belajar matematika khusus untuk siswa TK (CALISTUNG),
                 SD, SMP dengan metode belajar interaktif.
               </p>
@@ -511,7 +517,7 @@ function App() {
 
             <div>
               <h3 className="text-lg font-bold mb-4">Kontak Kami</h3>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-gray-700">
                 <li className="flex items-start">
                   <svg
                     className="h-5 w-5 mr-2 mt-0.5 text-indigo-500"
