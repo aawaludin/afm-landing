@@ -5,6 +5,7 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 import logo from "./assets/AFM_LOGO.png";
 import { useDarkMode } from "./contexts/DarkModeContext";
 import DarkModeToggle from "./components/DarkModeToggle";
+import hero from "./assets/hero.svg";
 
 const socialLinks = [
   {
@@ -284,7 +285,7 @@ function App() {
           >
             <div className="hidden h-96 rounded-xl w-full max-w-md md:flex items-center justify-center">
               <img 
-                src="./src/assets/hero.svg" 
+                src={hero} 
                 alt="Hero" 
                 className={isDark ? 'filter brightness-75' : ''}
               />
