@@ -17,9 +17,7 @@ a {
   font-weight: 500;
   text-decoration: inherit;
 }
-a:hover {
-  color: #1187f5;
-}
+
 
 body {
   margin: 0;
@@ -44,13 +42,6 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #ffffff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -63,4 +54,31 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+@import "tailwindcss";
+
+/* Enable dark mode dengan class-based approach */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Base styles untuk light mode */
+:root {
+  --background: #ffffff;
+  --foreground: #1a202c;
+}
+
+/* Dark mode styles */
+.dark {
+  --background: #1a202c;
+  --foreground: #f7fafc;
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
 }
