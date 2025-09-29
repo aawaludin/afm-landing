@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 import logo from "./assets/AFM_LOGO.png";
+import { useDarkMode } from "./contexts/DarkModeContext";
+import DarkModeToggle from "./components/DarkModeToggle";
 
 const socialLinks = [
   {
@@ -67,6 +69,7 @@ const scaleVariants = {
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { isDark } = useDarkMode();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,17 +81,28 @@ function App() {
   }, []);
 
   return (
-    <div className="font-sans min-w-screen bg-gradient-to-b from-indigo-200 to-purple-100 min-h-screen ">
+    <div className={`font-sans min-w-screen min-h-screen transition-colors duration-300 ${
+      isDark 
+        ? 'bg-gradient-to-b from-gray-900 to-gray-800 text-white' 
+        : 'bg-gradient-to-b from-indigo-200 to-purple-100 text-gray-900'
+    }`}>
       {/* Navigation */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
-        className={`py-4 sticky top-0 z-50 transition-all duration-300  backdrop-blur-md ${
-          isScrolled ? "bg-white/30 shadow-md" : "bg-white/10 backdrop-blur-sm"
+        className={`py-4 sticky top-0 z-50 transition-all duration-300 backdrop-blur-md ${
+          isScrolled 
+            ? isDark 
+              ? 'bg-gray-800/80 shadow-lg' 
+              : 'bg-white/30 shadow-md'
+            : isDark 
+              ? 'bg-gray-900/80 backdrop-blur-sm' 
+              : 'bg-white/10 backdrop-blur-sm'
         }`}
       >
-        <div className="container mx-auto px-4 flex justify-between items-center">
+        <div className="container mx-auto flex justify-between items-center">
+          {/* Logo */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -102,53 +116,72 @@ function App() {
           </motion.div>
 
           {/* Desktop Menu */}
-          <div
-            className={`hidden md:flex space-x-8 ${
-              isScrolled ? "text-purple-900" : "text-purple-600"
-            } `}
-          >
-            {["Beranda", "Kelas", "Testimoni", "Kontak"].map((item, index) => (
-              <motion.a
-                key={index}
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: index * 0.1 + 0.3 }}
-                href={`#${item.toLowerCase().replace(" ", "-")}`}
-                className=" font-medium transition"
-              >
-                {item}
-              </motion.a>
-            ))}
+          <div className="hidden md:flex items-center space-x-8">
+            <div className={`flex space-x-8 ${
+              isScrolled 
+                ? isDark ? 'text-white' : 'text-purple-900' 
+                : isDark ? 'text-gray-300' : 'text-purple-600'
+            }`}>
+              {["Beranda", "Kelas", "Testimoni", "Kontak"].map((item, index) => (
+                <motion.a
+                  key={index}
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: index * 0.1 + 0.3 }}
+                  href={`#${item.toLowerCase().replace(" ", "-")}`}
+                  className="font-medium transition hover:text-indigo-400"
+                >
+                  {item}
+                </motion.a>
+              ))}
+            </div>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="hidden md:block bg-gray-700 text-black font-bold py-2 px-6 rounded-lg transition duration-300"
-          >
-            <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
-          </motion.button>
-
-          {/* Mobile Menu Button */}
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            className="md:hidden text-gray-800 focus:outline-none"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div className="hidden md:flex items-center space-x-1">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`font-bold py-2 px-6 rounded-lg transition duration-300 ${
+                isDark
+                  ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                  : 'bg-gray-400 hover:bg-gray-800 text-indigo-600'
+              }`}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
-          </motion.button>
+              <a href="https://wa.me/6281373420852" className="dark:text-black">Daftar Sekarang</a>
+            </motion.button>
+            {/* Dark Mode Toggle */}
+            <div className="absolute top-5 right-13">
+              <DarkModeToggle />
+            </div>
+          </div>
+
+
+          {/* Mobile Menu - Dark Mode Toggle dan Menu Button */}
+          <div className="md:hidden flex items-center space-x-1 mr-7">
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              className={`focus:outline-none ${
+                isDark ? 'text-white' : 'text-gray-800'
+              }`}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </motion.button>
+            <DarkModeToggle />
+          </div>
+          
         </div>
 
         {/* Mobile Menu */}
@@ -157,19 +190,29 @@ function App() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden dark:tbg-white bg-white/70  py-4 px-4 overflow-hidden"
+            className={`md:hidden py-4 px-4 mt-3 overflow-hidden ${
+              isDark ? 'bg-gray-800' : 'bg-white/90'
+            }`}
           >
             {["Beranda", "Kelas", "Testimoni", "Kontak"].map((item, index) => (
               <a
                 key={index}
                 href={`#${item.toLowerCase().replace(" ", "-")}`}
-                className="block py-2 text-gray-800 hover:text-indigo-600"
+                className={`block py-2 transition ${
+                  isDark 
+                    ? 'text-gray-300 hover:text-white' 
+                    : 'text-gray-800 hover:text-indigo-600'
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item}
               </a>
             ))}
-            <button className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-indgo-700 font-bold py-2 px-4 rounded-lg w-full transition duration-300">
+            <button className={`mt-2 font-bold py-2 px-4 rounded-lg w-full transition duration-300 ${
+              isDark
+                ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+            }`}>
               <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
             </button>
           </motion.div>
@@ -179,7 +222,11 @@ function App() {
       {/* Hero Section */}
       <section
         id="beranda"
-        className="py-16 md:py-20 bg-gradient-to-b from-indigo-700 to-purple-500 text-white"
+        className={`py-16 md:py-20 transition-colors duration-300 ${
+          isDark
+            ? 'bg-gradient-to-b from-gray-800 to-gray-700'
+            : 'bg-gradient-to-b from-indigo-700 to-purple-500'
+        } text-white`}
       >
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
           <motion.div
@@ -208,18 +255,24 @@ function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-indigo-600 hover:bg-indigo-50 font-bold py-3 px-8 rounded-lg text-lg transition duration-300"
+                className={`font-bold py-3 px-8 rounded-lg text-lg transition duration-300 ${
+                  isDark
+                    ? 'bg-white text-gray-900 hover:bg-gray-100'
+                    : 'bg-white text-indigo-600 hover:bg-indigo-50'
+                }`}
               >
                 <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white border-2 border-white hover:bg-indigo-700 font-bold py-3 px-8 rounded-lg text-lg text-indigo-600 transition duration-300"
+                className={`border-2 font-bold py-3 px-8 rounded-lg bg-white text-lg transition duration-300 ${
+                  isDark
+                    ? 'border-white text-white hover:bg-white hover:text-gray-900'
+                    : 'border-white text-white'
+                }`}
               >
-                <a href="#program" className="">
-                  Lihat Program
-                </a>
+                <a href="#program" className="text-indigo-600 dark:text-black">Lihat Kelas</a>
               </motion.button>
             </motion.div>
           </motion.div>
@@ -230,14 +283,20 @@ function App() {
             className="md:w-1/2 flex justify-center"
           >
             <div className="hidden h-96 rounded-xl w-full max-w-md md:flex items-center justify-center">
-              <img src="./src/assets/hero.svg" alt="" />
+              <img 
+                src="./src/assets/hero.svg" 
+                alt="Hero" 
+                className={isDark ? 'filter brightness-75' : ''}
+              />
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Program Section */}
-      <section id="program" className="py-16 bg-white">
+      <section id="kelas" className={`py-16 transition-colors duration-300 ${
+        isDark ? 'bg-gray-800' : 'bg-white'
+      }`}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
@@ -246,10 +305,14 @@ function App() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-indigo-600 mb-4">
+            <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${
+              isDark ? 'text-white' : 'text-indigo-600'
+            }`}>
               Kelas Belajar
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className={`max-w-2xl mx-auto ${
+              isDark ? 'text-gray-300' : 'text-gray-600'
+            }`}>
               Kelas belajar yang kami sediakan ini, untuk membantu siswa
               memahami konsep matematika secara mendalam
             </p>
@@ -261,7 +324,7 @@ function App() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               variants={containerVariants}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full mx-auto"
+              className="grid grid-cols-1  md:grid-cols-2 gap-8 max-w-4xl w-full mx-auto"
             >
               {[
                 {
@@ -272,9 +335,11 @@ function App() {
                     "Tryout bulanan",
                     "Diskusi kelompok",
                     "TK (Calistung), SD, SMP",
+                    "1,5 jam/sesi",
                     "8 sesi/bulan",
                   ],
                   price: "Rp 250.000",
+                  link: "https://wa.me/6281373420852?text=Hallo%2C%20saya%20ingin%20daftar%20di%20KELAS%20ASYIK",
                 },
                 {
                   name: "Kelas Privat",
@@ -284,24 +349,36 @@ function App() {
                     "Tryout khusus",
                     "Konsultasi 1-on-1",
                     "TK (Calistung), SD, SMP",
+                    "1,5 jam/sesi",
                     "8 sesi/bulan",
                   ],
                   price: "Rp 500.000",
+                  link: "https://wa.me/6281373420852?text=Hallo%2C%20saya%20ingin%20daftar%20di%20KELAS%20PRIVAT",
                 },
               ].map((program, index) => (
                 <motion.div
                   key={index}
                   variants={itemVariants}
                   whileHover={{ y: -10 }}
-                  className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-6 border border-indigo-100"
+                  className={`rounded-xl shadow-lg p-6 border transition-colors duration-300 ${
+                    isDark
+                      ? 'bg-gray-700 border-gray-600'
+                      : 'bg-gradient-to-br from-white to-indigo-200 border-indigo-100'
+                  }`}
                 >
-                  <div className="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-6 ${
+                    isDark ? 'bg-indigo-900 text-indigo-200' : 'bg-indigo-100 text-indigo-600'
+                  }`}>
                     <span className="text-2xl font-bold">{index + 1}</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">
+                  <h3 className={`text-xl font-bold mb-4 ${
+                    isDark ? 'text-white' : 'text-gray-800'
+                  }`}>
                     {program.name}
                   </h3>
-                  <ul className="space-y-2 text-gray-600 mb-6">
+                  <ul className={`space-y-2 mb-6 ${
+                    isDark ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
                     {program.features.map((item, i) => (
                       <li key={i} className="flex items-start">
                         <svg
@@ -321,18 +398,37 @@ function App() {
                       </li>
                     ))}
                   </ul>
-                  <div className="font-bold text-2xl text-indigo-600 mb-4">
+                  <div className={`font-bold text-2xl mb-4 ${
+                    isDark ? 'text-indigo-400' : 'text-indigo-600'
+                  }`}>
                     {program.price}
-                    <span className="text-sm font-normal text-gray-500">
+                    <span className={`text-sm font-normal ${
+                      isDark ? 'text-gray-400' : 'text-gray-500'
+                    }`}>
                       /bulan
                     </span>
                   </div>
+                  {/* <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`w-full py-2 rounded-lg transition duration-300 font-bold ${
+                      isDark
+                        ? 'bg-gray-300 hover:bg-indigo-700 text-indigo-600'
+                        : 'bg-indigo-600 hover:bg-indigo-700 dark:text-white'
+                    }`}
+                  >
+                    Pilih Program
+                  </motion.button> */}
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full dark:text-white bg-indigo-600 hover:bg-indigo-700 text-indigo-700 py-2 rounded-lg transition duration-300"
+                    className={`w-full py-2 rounded-lg transition duration-300 font-bold ${
+                      isDark
+                        ? 'bg-gray-300 hover:bg-indigo-700 text-indigo-600'
+                        : 'bg-indigo-600 hover:bg-indigo-700 dark:text-white'
+                    }`}
                   >
-                    Pilih Program
+                    <a href={program.link} target="_blank" rel="noopener noreferrer">Pilih Program</a>
                   </motion.button>
                 </motion.div>
               ))}
@@ -344,7 +440,11 @@ function App() {
       {/* Testimoni Section */}
       <section
         id="testimoni"
-        className="py-16 bg-gradient-to-br from-indigo-50 to-purple-50"
+        className={`py-16 transition-colors duration-300 ${
+          isDark
+            ? 'bg-gradient-to-br from-gray-800 to-gray-900'
+            : 'bg-gradient-to-br from-indigo-50 to-purple-50'
+        }`}
       >
         <div className="container mx-auto px-4">
           <motion.div
@@ -354,10 +454,14 @@ function App() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-indigo-600 mb-4">
+            <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${
+              isDark ? 'text-white' : 'text-indigo-600'
+            }`}>
               Apa Kata Siswa Kami
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className={`max-w-2xl mx-auto ${
+              isDark ? 'text-gray-300' : 'text-gray-600'
+            }`}>
               Berikut adalah beberapa testimoni dari siswa yang telah bergabung
               dengan AFM Bimbel
             </p>
@@ -400,23 +504,37 @@ function App() {
                 key={index}
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
-                className="bg-white p-6 rounded-xl shadow-md border border-indigo-100"
+                className={`p-6 rounded-xl shadow-md border transition-colors duration-300 ${
+                  isDark
+                    ? 'bg-gray-700 border-gray-600'
+                    : 'bg-white border-indigo-100'
+                }`}
               >
                 <div className="flex items-center mb-4">
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: 0.2 * index }}
-                    className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"
+                    className={`border-2 border-dashed rounded-xl w-16 h-16 ${
+                      isDark ? 'bg-gray-600 border-gray-500' : 'bg-gray-200'
+                    }`}
                   />
                   <div className="ml-4">
-                    <h4 className="font-bold dark:text-indigo-600 text-lg">
+                    <h4 className={`font-bold text-lg ${
+                      isDark ? 'text-white' : 'text-indigo-600'
+                    }`}>
                       {testi.name}
                     </h4>
-                    <p className="text-indigo-600">{testi.school}</p>
+                    <p className={isDark ? 'text-indigo-300' : 'text-indigo-600'}>
+                      {testi.school}
+                    </p>
                   </div>
                 </div>
-                <p className="text-gray-600 italic">"{testi.quote}"</p>
+                <p className={`italic ${
+                  isDark ? 'text-gray-300' : 'text-gray-600'
+                }`}>
+                  "{testi.quote}"
+                </p>
                 <div className="flex mt-4">
                   {[...Array(5)].map((_, i) => (
                     <svg
@@ -441,7 +559,11 @@ function App() {
         whileInView="visible"
         viewport={{ once: true }}
         variants={fadeInVariants}
-        className="py-16 bg-gradient-to-r from-indigo-600 to-purple-700 text-white"
+        className={`py-16 text-white transition-colors duration-300 ${
+          isDark
+            ? 'bg-gradient-to-r from-gray-800 to-gray-700'
+            : 'bg-gradient-to-r from-indigo-600 to-purple-700'
+        }`}
       >
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -461,7 +583,11 @@ function App() {
               variants={scaleVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white text-indigo-600 hover:bg-indigo-50 font-bold py-3 px-8 rounded-lg text-lg transition duration-300"
+              className={`font-bold py-3 px-8 rounded-lg text-lg transition duration-300 ${
+                isDark
+                  ? 'bg-white text-gray-900 hover:bg-gray-100'
+                  : 'bg-white text-indigo-600 hover:bg-indigo-50'
+              }`}
             >
               <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
             </motion.button>
@@ -469,9 +595,13 @@ function App() {
               variants={scaleVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className=" border-2 bg-white border-white text-indigo-600 hover:bg-indigo-700 font-bold py-3 px-8 rounded-lg text-lg transition duration-300"
+              className={`border-2 font-bold py-3 px-8 rounded-lg bg-white text-lg transition duration-300 ${
+                isDark
+                  ? 'border-white text-white hover:bg-white hover:text-gray-900'
+                  : 'border-white text-white'
+              }`}
             >
-              <a href="https://wa.me/6281373420852">Konsultasi Gratis</a>
+              <a href="https://wa.me/6281373420852" className="dark:text-black text-indigo-600">Konsultasi Gratis</a>
             </motion.button>
           </motion.div>
         </div>
@@ -482,7 +612,12 @@ function App() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="bg-gradient-to-br from-indigo-50 to-purple-50 text-black py-12"
+        className={`py-12 transition-colors duration-300 ${
+          isDark
+            ? 'bg-gradient-to-br from-gray-800 to-gray-900 text-white'
+            : 'bg-gradient-to-br from-indigo-50 to-purple-50 text-black'
+        }`}
+        id="kontak"
       >
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -491,7 +626,9 @@ function App() {
                 <img src={logo} alt="Logo" className="w-10 h-7 mr-2" />
                 <span className="text-xl font-bold">AFM Bimbel</span>
               </div>
-              <p className="text-gray-700 mb-4">
+              <p className={`mb-4 ${
+                isDark ? 'text-gray-300' : 'text-gray-700'
+              }`}>
                 Bimbingan belajar matematika khusus untuk siswa TK (CALISTUNG),
                 SD, SMP dengan metode belajar interaktif.
               </p>
@@ -504,10 +641,18 @@ function App() {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={social.name}
-                    className="text-gray-400 hover:text-white transition duration-300"
+                    className={`transition duration-300 ${
+                      isDark 
+                        ? 'text-gray-400 hover:text-white' 
+                        : 'text-gray-600 hover:text-indigo-600'
+                    }`}
                   >
                     <span className="sr-only">{social.name}</span>
-                    <div className="border-2 w-10 h-10 rounded-full flex items-center justify-center">
+                    <div className={`border-2 w-10 h-10 rounded-full flex items-center justify-center ${
+                      isDark 
+                        ? 'border-gray-600 hover:border-white' 
+                        : 'border-gray-300 hover:border-indigo-600'
+                    }`}>
                       {social.icon}
                     </div>
                   </motion.a>
@@ -517,10 +662,12 @@ function App() {
 
             <div>
               <h3 className="text-lg font-bold mb-4">Kontak Kami</h3>
-              <ul className="space-y-2 text-gray-700">
+              <ul className={`space-y-2 ${
+                isDark ? 'text-gray-300' : 'text-gray-700'
+              }`}>
                 <li className="flex items-start">
                   <svg
-                    className="h-5 w-5 mr-2 mt-0.5 text-indigo-500"
+                    className="h-5 w-5 mr-2 mt-0.5 text-gray-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -536,7 +683,7 @@ function App() {
                 </li>
                 <li className="flex items-start">
                   <svg
-                    className="h-5 w-5 mr-2 mt-0.5 text-indigo-500"
+                    className="h-5 w-5 mr-2 mt-0.5 text-gray-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -552,7 +699,7 @@ function App() {
                 </li>
                 <li className="flex items-start">
                   <svg
-                    className="h-5 w-5 mr-2 mt-0.5 text-indigo-500"
+                    className="h-5 w-5 mr-2 mt-0.5 text-gray-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -578,7 +725,6 @@ function App() {
 
             <div>
               <h3 className="text-lg font-bold mb-2">Lokasi</h3>
-
               <div className="flex justify-center">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
@@ -599,7 +745,9 @@ function App() {
             </div>
           </div>
 
-          <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-400">
+          <div className={`border-t mt-10 pt-6 text-center ${
+            isDark ? 'border-gray-700 text-gray-400' : 'border-gray-300 text-gray-600'
+          }`}>
             <p>
               &copy; {new Date().getFullYear()} AFM-Bimbel. All rights reserved.
             </p>
