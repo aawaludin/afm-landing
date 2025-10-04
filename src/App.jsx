@@ -187,8 +187,8 @@ function App() {
               whileTap={{ scale: 0.95 }}
               className={`font-bold py-2 px-6 rounded-lg transition duration-300 ${
                 isDark
-                  ? 'bg-indigo-600 hover:bg-indigo-700 text-indigo-600'
-                  : 'bg-gray-400 hover:bg-gray-800 text-indigo-600'
+                  ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                  : 'bg-gray-100 hover:bg-gray-800 text-indigo-600'
               }`}
               onClick={() => setIsModalOpen(true)}
             >
@@ -489,20 +489,10 @@ function App() {
                     ? 'bg-white text-gray-900 hover:bg-gray-100'
                     : 'bg-white text-indigo-600 hover:bg-indigo-50'
                 }`}
+                onClick={() => setIsModalOpen(true)}
               >
-              <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`font-bold py-2 px-6 rounded-lg transition duration-300 ${
-                isDark
-                  ? 'bg-indigo-600 hover:bg-indigo-700 text-indigo-600'
-                  : 'bg-gray-400 hover:bg-gray-800 text-indigo-600'
-              }`}
-              onClick={() => setIsModalOpen(true)}
-            >
               Daftar Sekarang
             </motion.button>
-              </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
