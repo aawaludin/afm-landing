@@ -81,7 +81,7 @@ function App() {
     phone: '',
     address: '',
     program: '',
-    promoCode: 'AFMOKTOBER',
+    promoCode: 'AFMOKTOBER2025',
   });
 
   const handleInputChange = (e) => {
@@ -105,7 +105,7 @@ function App() {
       phone: '',
       address: '',
       program: '',
-      promoCode: 'AFMOKTOBER',
+      promoCode: 'AFMOKTOBER2025',
     });
   };
 
@@ -201,7 +201,8 @@ function App() {
           </div>
 
           {/* Mobile Menu - Dark Mode Toggle dan Menu Button */}
-          <div className="md:hidden flex items-center space-x-1 mr-7">
+          <div className="md:hidden flex gap-4 items-center space-x-1 mr-2">
+            
             <motion.button
               whileTap={{ scale: 0.9 }}
               className={`focus:outline-none ${
@@ -222,8 +223,8 @@ function App() {
                   d="M4 6h16M4 12h16m-7 6h7"
                 />
               </svg>
-            </motion.button>
-            <DarkModeToggle />
+            </motion.button>  
+            <DarkModeToggle />      
           </div>
         </div>
 
@@ -252,10 +253,10 @@ function App() {
               </a>
             ))}
             <button
-              className={`mt-2 font-bold py-2 px-4 rounded-lg w-full transition duration-300 ${
+              className={`mt-2 font-bold py-2 px-4 rounded-lg w-full transition duration-300 bg-gray-300 ${
                 isDark
                   ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                  : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                  : 'bg-gray-300 hover:bg-indigo-700 text-indigo-600'
               }`}
               onClick={() => setIsModalOpen(true)}
             >
@@ -423,8 +424,8 @@ function App() {
                   type="button"
                   className={`py-2 px-4 rounded-lg text-sm sm:text-base ${
                     isDark
-                      ? 'bg-gray-600 hover:bg-gray-500 text-indigo-600'
-                      : 'bg-gray-300 hover:bg-gray-400 text-indigo-600'
+                      ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                      : 'bg-gray-500 hover:bg-indigo-700 text-white'
                   }`}
                   onClick={() => setIsModalOpen(false)}
                 >
@@ -436,8 +437,8 @@ function App() {
                   type="submit"
                   className={`py-2 px-4 rounded-lg text-sm sm:text-base ${
                     isDark
-                      ? 'bg-indigo-600 hover:bg-indigo-700 text-indigo-600'
-                      : 'bg-indigo-600 hover:bg-indigo-700 text-indigo-600'
+                      ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                      : 'bg-gray-500 hover:bg-indigo-700 text-white'
                   }`}
                 >
                   Kirim
@@ -498,7 +499,7 @@ function App() {
                 whileTap={{ scale: 0.95 }}
                 className={`border-2 font-bold py-3 px-8 rounded-lg bg-white text-lg transition duration-300 ${
                   isDark
-                    ? 'border-white text-indigo-600 hover:bg-white hover:text-gray-900'
+                    ? 'border-white text-black hover:bg-white hover:text-gray-900'
                     : 'border-white text-indigo-600 hover:bg-white hover:text-indigo-600'
                 }`}
               >
