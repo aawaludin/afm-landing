@@ -72,6 +72,43 @@ function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { isDark } = useDarkMode();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    studentName: '',
+    school: '',
+    grade: '',
+    guardianName: '',
+    phone: '',
+    address: '',
+    program: '',
+    promoCode: 'AFMOKTOBER',
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { studentName, school, grade, guardianName, phone, address, program, promoCode } = formData;
+    const message = `Halo, Saya ingin mendaftar di kelas AFM:\nNama Siswa: ${studentName}\nAsal Sekolah: ${school}\nKelas: ${grade}\nNama Wali: ${guardianName}\nNo. HP: ${phone}\nAlamat: ${address}\nProgram: ${program}\nKode Promo: ${promoCode}`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/6281373420852?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank');
+    setIsModalOpen(false);
+    setFormData({
+      studentName: '',
+      school: '',
+      grade: '',
+      guardianName: '',
+      phone: '',
+      address: '',
+      program: '',
+      promoCode: 'AFMOKTOBER',
+    });
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -91,18 +128,18 @@ function App() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+        transition={{ duration: 0.5, type: 'spring', stiffness: 100 }}
         className={`py-4 sticky top-0 z-50 transition-all duration-300 backdrop-blur-md ${
-          isScrolled 
-            ? isDark 
-              ? 'bg-gray-800/80 shadow-lg' 
+          isScrolled
+            ? isDark
+              ? 'bg-gray-800/80 shadow-lg'
               : 'bg-white/30 shadow-md'
-            : isDark 
-              ? 'bg-gray-900/80 backdrop-blur-sm' 
-              : 'bg-white/10 backdrop-blur-sm'
+            : isDark
+            ? 'bg-gray-900/80 backdrop-blur-sm'
+            : 'bg-white/10 backdrop-blur-sm'
         }`}
       >
-        <div className="container mx-auto flex justify-between items-center">
+        <div className="container mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <motion.div
             initial={{ scale: 0 }}
@@ -118,18 +155,24 @@ function App() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <div className={`flex space-x-8 ${
-              isScrolled 
-                ? isDark ? 'text-white' : 'text-purple-900' 
-                : isDark ? 'text-gray-300' : 'text-purple-600'
-            }`}>
-              {["Beranda", "Kelas", "Testimoni", "Kontak"].map((item, index) => (
+            <div
+              className={`flex space-x-8 ${
+                isScrolled
+                  ? isDark
+                    ? 'text-white'
+                    : 'text-purple-900'
+                  : isDark
+                  ? 'text-gray-300'
+                  : 'text-purple-600'
+              }`}
+            >
+              {['Beranda', 'Kelas', 'Testimoni', 'Kontak'].map((item, index) => (
                 <motion.a
                   key={index}
                   initial={{ y: -20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: index * 0.1 + 0.3 }}
-                  href={`#${item.toLowerCase().replace(" ", "-")}`}
+                  href={`#${item.toLowerCase().replace(' ', '-')}`}
                   className="font-medium transition hover:text-indigo-400"
                 >
                   {item}
@@ -144,18 +187,18 @@ function App() {
               whileTap={{ scale: 0.95 }}
               className={`font-bold py-2 px-6 rounded-lg transition duration-300 ${
                 isDark
-                  ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                  ? 'bg-indigo-600 hover:bg-indigo-700 text-indigo-600'
                   : 'bg-gray-400 hover:bg-gray-800 text-indigo-600'
               }`}
+              onClick={() => setIsModalOpen(true)}
             >
-              <a href="https://wa.me/6281373420852" className="dark:text-black">Daftar Sekarang</a>
+              Daftar Sekarang
             </motion.button>
             {/* Dark Mode Toggle */}
             <div className="absolute top-5 right-13">
               <DarkModeToggle />
             </div>
           </div>
-
 
           {/* Mobile Menu - Dark Mode Toggle dan Menu Button */}
           <div className="md:hidden flex items-center space-x-1 mr-7">
@@ -182,26 +225,25 @@ function App() {
             </motion.button>
             <DarkModeToggle />
           </div>
-          
         </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
+            animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             className={`md:hidden py-4 px-4 mt-3 overflow-hidden ${
               isDark ? 'bg-gray-800' : 'bg-white/90'
             }`}
           >
-            {["Beranda", "Kelas", "Testimoni", "Kontak"].map((item, index) => (
+            {['Beranda', 'Kelas', 'Testimoni', 'Kontak'].map((item, index) => (
               <a
                 key={index}
-                href={`#${item.toLowerCase().replace(" ", "-")}`}
+                href={`#${item.toLowerCase().replace(' ', '-')}`}
                 className={`block py-2 transition ${
-                  isDark 
-                    ? 'text-gray-300 hover:text-white' 
+                  isDark
+                    ? 'text-gray-300 hover:text-white'
                     : 'text-gray-800 hover:text-indigo-600'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
@@ -209,16 +251,202 @@ function App() {
                 {item}
               </a>
             ))}
-            <button className={`mt-2 font-bold py-2 px-4 rounded-lg w-full transition duration-300 ${
-              isDark
-                ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                : 'bg-indigo-600 hover:bg-indigo-700 text-white'
-            }`}>
-              <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
+            <button
+              className={`mt-2 font-bold py-2 px-4 rounded-lg w-full transition duration-300 ${
+                isDark
+                  ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                  : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+              }`}
+              onClick={() => setIsModalOpen(true)}
+            >
+              Daftar Sekarang
             </button>
           </motion.div>
         )}
       </motion.nav>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 sm:px-0"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            className={`p-4 sm:p-6 rounded-lg w-full max-w-[90vw] sm:max-w-md lg:max-w-lg ${
+              isDark ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-lg sm:text-xl font-bold mb-4 text-center sm:text-left">
+              Form Pendaftaran Kelas AFM
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="studentName" className="block mb-1 text-sm sm:text-base">
+                  Nama Siswa
+                </label>
+                <input
+                  type="text"
+                  id="studentName"
+                  name="studentName"
+                  value={formData.studentName}
+                  onChange={handleInputChange}
+                  className={`w-full p-2 rounded text-sm sm:text-base ${
+                    isDark
+                      ? 'bg-gray-700 text-white border-gray-600'
+                      : 'bg-gray-100 text-gray-800 border-gray-300'
+                  } border focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="school" className="block mb-1 text-sm sm:text-base">
+                  Asal Sekolah
+                </label>
+                <input
+                  type="text"
+                  id="school"
+                  name="school"
+                  value={formData.school}
+                  onChange={handleInputChange}
+                  className={`w-full p-2 rounded text-sm sm:text-base ${
+                    isDark
+                      ? 'bg-gray-700 text-white border-gray-600'
+                      : 'bg-gray-100 text-gray-800 border-gray-300'
+                  } border focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="grade" className="block mb-1 text-sm sm:text-base">
+                  Kelas
+                </label>
+                <input
+                  type="text"
+                  id="grade"
+                  name="grade"
+                  value={formData.grade}
+                  onChange={handleInputChange}
+                  className={`w-full p-2 rounded text-sm sm:text-base ${
+                    isDark
+                      ? 'bg-gray-700 text-white border-gray-600'
+                      : 'bg-gray-100 text-gray-800 border-gray-300'
+                  } border focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="guardianName" className="block mb-1 text-sm sm:text-base">
+                  Nama Wali
+                </label>
+                <input
+                  type="text"
+                  id="guardianName"
+                  name="guardianName"
+                  value={formData.guardianName}
+                  onChange={handleInputChange}
+                  className={`w-full p-2 rounded text-sm sm:text-base ${
+                    isDark
+                      ? 'bg-gray-700 text-white border-gray-600'
+                      : 'bg-gray-100 text-gray-800 border-gray-300'
+                  } border focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="phone" className="block mb-1 text-sm sm:text-base">
+                  No. HP
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className={`w-full p-2 rounded text-sm sm:text-base ${
+                    isDark
+                      ? 'bg-gray-700 text-white border-gray-600'
+                      : 'bg-gray-100 text-gray-800 border-gray-300'
+                  } border focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="address" className="block mb-1 text-sm sm:text-base">
+                  Alamat
+                </label>
+                <textarea
+                  id="address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  className={`w-full p-2 rounded text-sm sm:text-base resize-y ${
+                    isDark
+                      ? 'bg-gray-700 text-white border-gray-600'
+                      : 'bg-gray-100 text-gray-800 border-gray-300'
+                  } border focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+              <div>
+                <label htmlFor="program" className="block mb-1 text-sm sm:text-base">
+                  Program
+                </label>
+                <select
+                  id="program"
+                  name="program"
+                  value={formData.program}
+                  onChange={handleInputChange}
+                  className={`w-full p-2 rounded text-sm sm:text-base ${
+                    isDark
+                      ? 'bg-gray-700 text-white border-gray-600'
+                      : 'bg-gray-100 text-gray-800 border-gray-300'
+                  } border focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                  required
+                >
+                  <option value="">Pilih Program</option>
+                  <option value="Kelas Asyik">Kelas Asyik</option>
+                  <option value="Kelas Privat">Kelas Privat</option>
+                </select>
+              </div>
+              <div className="flex justify-end space-x-2 pt-2">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  type="button"
+                  className={`py-2 px-4 rounded-lg text-sm sm:text-base ${
+                    isDark
+                      ? 'bg-gray-600 hover:bg-gray-500 text-indigo-600'
+                      : 'bg-gray-300 hover:bg-gray-400 text-indigo-600'
+                  }`}
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Batal
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  type="submit"
+                  className={`py-2 px-4 rounded-lg text-sm sm:text-base ${
+                    isDark
+                      ? 'bg-indigo-600 hover:bg-indigo-700 text-indigo-600'
+                      : 'bg-indigo-600 hover:bg-indigo-700 text-indigo-600'
+                  }`}
+                >
+                  Kirim
+                </motion.button>
+              </div>
+            </form>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Hero Section */}
       <section
@@ -262,18 +490,29 @@ function App() {
                     : 'bg-white text-indigo-600 hover:bg-indigo-50'
                 }`}
               >
-                <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
+              <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`font-bold py-2 px-6 rounded-lg transition duration-300 ${
+                isDark
+                  ? 'bg-indigo-600 hover:bg-indigo-700 text-indigo-600'
+                  : 'bg-gray-400 hover:bg-gray-800 text-indigo-600'
+              }`}
+              onClick={() => setIsModalOpen(true)}
+            >
+              Daftar Sekarang
+            </motion.button>
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={`border-2 font-bold py-3 px-8 rounded-lg bg-white text-lg transition duration-300 ${
                   isDark
-                    ? 'border-white text-white hover:bg-white hover:text-gray-900'
-                    : 'border-white text-white'
+                    ? 'border-white text-indigo-600 hover:bg-white hover:text-gray-900'
+                    : 'border-white text-indigo-600 hover:bg-white hover:text-indigo-600'
                 }`}
               >
-                <a href="#program" className="text-indigo-600 dark:text-black">Lihat Kelas</a>
+                <a href="#program">Lihat Kelas</a>
               </motion.button>
             </motion.div>
           </motion.div>
