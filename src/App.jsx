@@ -503,7 +503,7 @@ function App() {
                     : 'border-white text-indigo-600 hover:bg-white hover:text-indigo-600'
                 }`}
               >
-                <a href="#program">Lihat Kelas</a>
+                <a href="#kelas">Lihat Kelas</a>
               </motion.button>
             </motion.div>
           </motion.div>
