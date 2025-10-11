@@ -819,8 +819,9 @@ function App() {
                   ? 'bg-white text-gray-900 hover:bg-gray-100'
                   : 'bg-white text-indigo-600 hover:bg-indigo-50'
               }`}
+              onClick={() => setIsModalOpen(true)}
             >
-              <a href="https://wa.me/6281373420852">Daftar Sekarang</a>
+              Daftar Sekarang
             </motion.button>
             <motion.button
               variants={scaleVariants}
