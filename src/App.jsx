@@ -81,7 +81,6 @@ function App() {
     phone: '',
     address: '',
     program: '',
-    promoCode: 'AFMOKTOBER2025',
   });
 
   const handleInputChange = (e) => {
@@ -92,7 +91,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { studentName, school, grade, guardianName, phone, address, program, promoCode } = formData;
-    const message = `Halo, Saya ingin mendaftar di kelas AFM:\nNama Siswa: ${studentName}\nAsal Sekolah: ${school}\nKelas: ${grade}\nNama Wali: ${guardianName}\nNo. HP: ${phone}\nAlamat: ${address}\nProgram: ${program}\nKode Promo: ${promoCode}`;
+    const message = `Halo, Saya ingin mendaftar di kelas AFM:\nNama Siswa: ${studentName}\nAsal Sekolah: ${school}\nKelas: ${grade}\nNama Wali: ${guardianName}\nNo. HP: ${phone}\nAlamat: ${address}\nProgram: ${program}`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/6281373420852?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
@@ -105,7 +104,6 @@ function App() {
       phone: '',
       address: '',
       program: '',
-      promoCode: 'AFMOKTOBER2025',
     });
   };
 
