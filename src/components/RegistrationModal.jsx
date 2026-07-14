@@ -200,8 +200,14 @@ const RegistrationModal = ({ isDark, isModalOpen, setIsModalOpen }) => {
                 isDark={isDark}
                 options={[
                   { value: "", label: "Pilih Program" },
-                  { value: "Kelas Asyik", label: "Kelas Asyik" },
-                  { value: "Kelas Privat", label: "Kelas Privat" },
+                  {
+                    value: "Kelas Asyik",
+                    label: "Kelas Asyik - Rp. 250.000/8 Sesi",
+                  },
+                  {
+                    value: "Kelas Privat",
+                    label: "Kelas Privat - Rp.500.000/8 Sesi",
+                  },
                 ]}
                 required
               />

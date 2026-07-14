@@ -27,22 +27,21 @@ const testimonials = [
       "Berkat AFM Bimbel, nilai matematika saya naik signifikan. Metode pengajarannya mudah dipahami dan menyenangkan!",
   },
   {
-    name: "Bita",
-    school: "SD Sang Pencerah",
+    name: "Hana",
+    school: "SDN 4 Metro Timur",
     quote:
-      "Tutor-tutornya sangat sabar dan berpengalaman. Sekarang saya jadi suka pelajaran matematika!",
+      "Tutornya membantu saya belajar matematika dengan cara yang menyenangkan dan interaktif. Saya merasa lebih semangat belajar.",
   },
   {
-    name: "Rasyid",
+    name: "Mazaya",
     school: "SD Cahaya Bangsa",
-    quote:
-      "Belajar jadi seru banget! Ada game matematika dan hadiah buat yang berprestasi.",
+    quote: "Nilai matematika di sekolah saya naik.",
   },
   {
-    name: "Zafran",
-    school: "SD Sang Pencerah",
+    name: "Azza",
+    school: "SMPMU Ahmad Dahlan Metro",
     quote:
-      "Tryout bulanannya sangat membantu mempersiapkan ujian. Soal-soalnya mirip dengan ujian sekolah.",
+      "Semenjak gabung di afm, saya jadi lebih semangat belajar matematika.",
   },
 ];
 
