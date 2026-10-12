@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
-const RegistrationModal = ({ isDark, isModalOpen, setIsModalOpen }) => {
+const RegistrationModal = ({
+  isDark,
+  isModalOpen,
+  setIsModalOpen,
+  initialProgram = "",
+}) => {
   const [formData, setFormData] = useState({
     studentName: "",
     school: "",
@@ -32,6 +37,15 @@ const RegistrationModal = ({ isDark, isModalOpen, setIsModalOpen }) => {
       document.body.style.overflow = "auto";
     };
   }, [isModalOpen, setIsModalOpen]);
+
+  useEffect(() => {
+    if (isModalOpen && initialProgram) {
+      setFormData((prev) => ({
+        ...prev,
+        program: initialProgram,
+      }));
+    }
+  }, [isModalOpen, initialProgram]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
